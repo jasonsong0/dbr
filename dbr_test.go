@@ -9,7 +9,7 @@ import (
 
 	_ "github.com/denisenkom/go-mssqldb"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/gocraft/dbr/v2/dialect"
+	"github.com/jasonsong0/dbr/v2/dialect"
 	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/stretchr/testify/require"
