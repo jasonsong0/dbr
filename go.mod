@@ -2,7 +2,10 @@ module github.com/jasonsong0/dbr/v2
 
 go 1.17
 
-replace github.com/gocraft/dbr/v2 => github.com/jasonsong0/dbr/v2 v2.7.3-p1
+replace (
+	github.com/gocraft/dbr/v2 => github.com/jasonsong0/dbr/v2 v2.7.3-p1
+	github.com/gocraft/dbr/v2/dialect => github.com/jasonsong0/dbr/v2/dialect v2.7.3-p1
+)
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.0
