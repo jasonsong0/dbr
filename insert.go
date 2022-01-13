@@ -22,6 +22,7 @@ type InsertStmt struct {
 	Value        [][]interface{}
 	Ignored      bool
 	ReturnColumn []string
+	DuplicateKey []string // ON DUPLICATED KEY UPDATE
 	RecordID     *int64
 	comments     Comments
 }
@@ -98,6 +99,21 @@ func (b *InsertStmt) Build(d Dialect, buf Buffer) error {
 			}
 			buf.WriteString(d.QuoteIdent(col))
 		}
+	}
+
+	if d == dialect.MySQL && len(b.DuplicateKey) > 0 {
+		buf.WriteString(" ON DUPLICATE KEY UPDATE ")
+		for i, col := range b.DuplicateKey {
+			if i > 0 {
+				buf.WriteString(",")
+			}
+			buf.WriteString(d.QuoteIdent(col))
+			buf.WriteString("=VALUES(")
+			buf.WriteString(d.QuoteIdent(col))
+			buf.WriteString(")")
+
+		}
+
 	}
 
 	return nil
@@ -216,6 +232,12 @@ func (b *InsertStmt) Record(structValue interface{}) *InsertStmt {
 // Returning specifies the returning columns for postgres/mssql.
 func (b *InsertStmt) Returning(column ...string) *InsertStmt {
 	b.ReturnColumn = column
+	return b
+}
+
+// for duplicate key update columns for mysql.
+func (b *InsertStmt) DupKey(column ...string) *InsertStmt {
+	b.DuplicateKey = column
 	return b
 }
 
